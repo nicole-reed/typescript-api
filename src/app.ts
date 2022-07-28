@@ -1,20 +1,33 @@
-import express, { Request, Response } from 'express';
-import { getUserSchema } from './models/user';
-import {getUser, getUsers} from './repositories/users';
+import express, { NextFunction, Request, Response } from "express";
+import { userController } from "./controllers/user.controller";
 
 const app = express();
 const port = 3000;
 
-app.get('/', async (req: Request, res: Response) => {
-    const users = await getUsers()
-    res.send(users);
+app.get("/", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.send("1 Rep Max Tracker Homepage");
+    } catch (error) {
+        next(error);
+    }
 });
 
-app.get('/:id', async (req: Request, res: Response) => {
-    const validatedRequest = getUserSchema.parse(req)
-    const id = validatedRequest.params.id
-    const user = await getUser(id)
-    res.send(user);
+app.get("/users", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { body, status } = await userController.getUsers();
+        res.status(status).send(body);
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.get("/users/:id", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { body, status } = await userController.getUser(req);
+        res.status(status).send(body);
+    } catch (error) {
+        next(error);
+    }
 });
 
 app.listen(port, () => {
