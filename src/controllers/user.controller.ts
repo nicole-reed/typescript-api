@@ -1,4 +1,4 @@
-import { getUserSchema } from "../models/user";
+import { addUserSchema, getUserSchema } from "../models/user";
 import { userRepository } from "../repositories/user.repository";
 import { HttpResponse } from "../models/httpResponse";
 
@@ -7,6 +7,18 @@ export const getUsers = async (): Promise<HttpResponse> => {
 
     return {
         body: users,
+        status: 200
+    };
+};
+
+export const addUser = async (request: unknown): Promise<HttpResponse> => {
+    const validatedRequest = addUserSchema.parse(request);
+    const name = validatedRequest.body.name;
+    const username = validatedRequest.body.username;
+    const user = await userRepository.addUser(name, username);
+
+    return {
+        body: user,
         status: 200
     };
 };
@@ -23,4 +35,4 @@ export const getUser = async (request: unknown): Promise<HttpResponse> => {
 };
 
 
-export const userController = { getUser, getUsers };
+export const userController = { getUser, getUsers, addUser };

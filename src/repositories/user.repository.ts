@@ -13,6 +13,12 @@ export const getUsers = async (): Promise<User[]> => {
     return users;
 };
 
+export const addUser = async (name: string, username: string): Promise<void> => {
+    const client = new Firestore();
+
+    await client.collection("users").add({ name, username });
+};
+
 export const getUser = async (id: string): Promise<User> => {
     const client = new Firestore();
 
@@ -29,4 +35,4 @@ export const getUser = async (id: string): Promise<User> => {
     return user;
 };
 
-export const userRepository = { getUser, getUsers };
+export const userRepository = { getUser, getUsers, addUser };
