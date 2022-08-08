@@ -13,8 +13,7 @@ export const getUsers = async (): Promise<HttpResponse> => {
 
 export const addUser = async (request: unknown): Promise<HttpResponse> => {
     const validatedRequest = addUserSchema.parse(request);
-    const name = validatedRequest.body.name;
-    const username = validatedRequest.body.username;
+    const { name, username } = validatedRequest.body;
     const user = await userRepository.addUser(name, username);
 
     return {

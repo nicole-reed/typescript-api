@@ -5,7 +5,8 @@ export const httpHandler = (simpleHandler: SimpleHandler): Handler => {
         try {
             await simpleHandler(req, res);
         } catch (error) {
-            res.status(500).json({ error });
+            console.log(error);
+            res.status(500).json({ error: error instanceof Error ? error.message : "unknown error" });
         }
     }; 
 };
