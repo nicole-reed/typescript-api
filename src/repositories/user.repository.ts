@@ -26,7 +26,7 @@ export const addUser = async (name: string, username: string): Promise<void> => 
         }
 
         const id = v4();
-        return transaction.create(usersCollectionRef.doc(id), { name, username });
+        return transaction.create(usersCollectionRef.doc(id), { name, username, id });
     });
 };
 

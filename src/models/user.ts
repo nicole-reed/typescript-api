@@ -2,17 +2,18 @@ import { z } from "zod";
 
 export const userSchema = z.object({
     name: z.string(),
-    username: z.string()
+    username: z.string(),
+    id: z.string()
 });
 
-export const addUserSchema = z.object({
+export const addUserRequestSchema = z.object({
     body: z.object({
         name: z.string(),
         username: z.string()
     })
 });
 
-export const getUserSchema = z.object({
+export const getUserRequestSchema = z.object({
     params: z.object({
         id: z.string()
     })
