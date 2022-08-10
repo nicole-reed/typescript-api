@@ -1,8 +1,10 @@
 import { z } from "zod";
+import { Units } from "../enums/units.enum";
 
 export const exerciseSchema = z.object({
     name: z.string(),
-    max: z.string(),
+    max: z.number(),
+    units: z.nativeEnum(Units),
     id: z.string(),
     userid: z.string()
 });
@@ -10,7 +12,8 @@ export const exerciseSchema = z.object({
 export const addExerciseRequestSchema = z.object({
     body: z.object({
         name: z.string(),
-        max: z.string(),
+        max: z.number(),
+        units: z.nativeEnum(Units),
         userid: z.string()
     })
 });
@@ -18,6 +21,12 @@ export const addExerciseRequestSchema = z.object({
 export const getExerciseRequestSchema = z.object({
     params: z.object({
         id: z.string()
+    })
+});
+
+export const getExercisesByUserIdRequestSchema = z.object({
+    params: z.object({
+        userid: z.string()
     })
 });
 
