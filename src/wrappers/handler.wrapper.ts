@@ -1,11 +1,12 @@
 import { Handler, Request, Response } from "express";
 
 export const httpHandler = (simpleHandler: SimpleHandler): Handler => {
-    return async (req, res, next) => {
+    return async (req, res) => {
         try {
             await simpleHandler(req, res);
         } catch (error) {
-            next(error);
+            console.log(error);
+            res.status(500).json({ error: error instanceof Error ? error.message : "unknown error" });
         }
     }; 
 };

@@ -1,5 +1,6 @@
 import { Firestore } from "@google-cloud/firestore";
 import { User, userSchema } from "../models/user";
+import { v4 } from "uuid";
 
 export const getUsers = async (): Promise<User[]> => {
     const client = new Firestore();
@@ -11,6 +12,22 @@ export const getUsers = async (): Promise<User[]> => {
     const users = rawUsers.map(user => userSchema.parse(user));
 
     return users;
+};
+
+export const addUser = async (name: string, username: string): Promise<void> => {
+    const client = new Firestore();
+    const usersCollectionRef = client.collection("users");
+
+    await client.runTransaction(async (transaction) => {
+        const users = await transaction.get(usersCollectionRef.where("username", "==", username));
+
+        if (users.docs.length > 0){
+            throw new Error(`user with username ${username} already exists`);
+        }
+
+        const id = v4();
+        return transaction.create(usersCollectionRef.doc(id), { name, username, id });
+    });
 };
 
 export const getUser = async (id: string): Promise<User> => {
@@ -29,4 +46,4 @@ export const getUser = async (id: string): Promise<User> => {
     return user;
 };
 
-export const userRepository = { getUser, getUsers };
+export const userRepository = { getUser, getUsers, addUser };
