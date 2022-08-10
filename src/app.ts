@@ -26,7 +26,7 @@ app.get("/exercises", getExercises);
 
 app.get("/exercises/:id", getExercise);
 
-app.post("/users/:userid/exercises", addExercise);
+app.post("/exercises", addExercise);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
