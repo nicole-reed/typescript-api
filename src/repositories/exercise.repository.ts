@@ -32,7 +32,7 @@ export const getExercise = async (id: string): Promise<Exercise> => {
     const rawExercise = exerciseSnapshot.data();
 
     if (!rawExercise) {
-        throw new Error(`exercise with id ${id} doesnt exist`);
+        throw new Error(`exercise with id ${id} doesn't exist`);
     }
 
     const exercise = exerciseSchema.parse(rawExercise);

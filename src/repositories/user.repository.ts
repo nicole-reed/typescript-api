@@ -38,7 +38,7 @@ export const getUser = async (id: string): Promise<User> => {
     const rawUser = userSnapshot.data();
 
     if (!rawUser) {
-        throw new Error(`user with id ${id} doesnt exist`);
+        throw new Error(`user with id ${id} doesn't exist`);
     }
 
     const user = userSchema.parse(rawUser);
