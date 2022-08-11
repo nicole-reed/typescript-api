@@ -1,4 +1,4 @@
-import { addExerciseRequestSchema, getExerciseRequestSchema } from "../models/exercise";
+import { addExerciseRequestSchema, getExerciseRequestSchema, getExercisesByUserIdRequestSchema } from "../models/exercise";
 import { exerciseRepository } from "../repositories/exercise.repository";
 import { HttpResponse } from "../models/httpResponse";
 
@@ -13,8 +13,8 @@ export const getExcercises = async (): Promise<HttpResponse> => {
 
 export const addExercise = async (request: unknown): Promise<HttpResponse> => {
     const validatedRequest = addExerciseRequestSchema.parse(request);
-    const { name, max, userid } = validatedRequest.body;
-    const exercise = exerciseRepository.addExercise(name, max, userid);
+    const { name, max, units, userid } = validatedRequest.body;
+    const exercise = exerciseRepository.addExercise(name, max, units, userid);
 
     return {
         body: exercise,
@@ -33,5 +33,16 @@ export const getExercise = async (request: unknown): Promise<HttpResponse> => {
     };
 };
 
+export const getExercisesByUserId = async (request: unknown): Promise<HttpResponse> => {
+    const validatedRequest = getExercisesByUserIdRequestSchema.parse(request);
+    const userid = validatedRequest.params.userid;
+    const exercises = await exerciseRepository.getExercisesByUserId(userid);
 
-export const exerciseController = { getExcercises, getExercise, addExercise };
+    return {
+        body: exercises,
+        status: 200
+    };
+};
+
+
+export const exerciseController = { getExcercises, getExercise, addExercise, getExercisesByUserId };
