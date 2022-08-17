@@ -13,8 +13,10 @@ export const addExerciseRequestSchema = z.object({
     body: z.object({
         name: z.string(),
         max: z.number(),
-        units: z.nativeEnum(Units),
-        userid: z.string()
+        units: z.nativeEnum(Units)
+    }),
+    user: z.object({
+        id: z.string()
     })
 });
 

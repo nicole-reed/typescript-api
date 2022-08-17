@@ -1,6 +1,9 @@
-import { addUserRequestSchema, getUserRequestSchema } from "../models/user";
+import { addUserRequestSchema, getUserRequestSchema, loginUserRequestSchema } from "../models/user";
 import { userRepository } from "../repositories/user.repository";
 import { HttpResponse } from "../models/httpResponse";
+import { tokenService } from "../services/token.service";
+import bcrypt from "bcrypt";
+import "dotenv/config";
 
 export const getUsers = async (): Promise<HttpResponse> => {
     const users = await userRepository.getUsers();
@@ -13,11 +16,27 @@ export const getUsers = async (): Promise<HttpResponse> => {
 
 export const addUser = async (request: unknown): Promise<HttpResponse> => {
     const validatedRequest = addUserRequestSchema.parse(request);
-    const { name, username } = validatedRequest.body;
-    const user = await userRepository.addUser(name, username);
+    const { name, username, password } = validatedRequest.body;
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = await userRepository.addUser(name, username, hashedPassword);
 
     return {
         body: user,
+        status: 201
+    };
+};
+
+export const loginUser = async (request: unknown): Promise<HttpResponse> => {
+    const validatedRequest = loginUserRequestSchema.parse(request);
+    const { username, password } = validatedRequest.body;
+
+    const user = await userRepository.loginUser(username, password);
+
+    return {
+        body: { ...user, token: tokenService.generateToken(user.id) },
         status: 200
     };
 };
@@ -33,5 +52,4 @@ export const getUser = async (request: unknown): Promise<HttpResponse> => {
     };
 };
 
-
-export const userController = { getUser, getUsers, addUser };
+export const userController = { getUser, getUsers, addUser, loginUser };

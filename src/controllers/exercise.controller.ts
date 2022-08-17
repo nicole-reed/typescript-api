@@ -13,8 +13,9 @@ export const getExcercises = async (): Promise<HttpResponse> => {
 
 export const addExercise = async (request: unknown): Promise<HttpResponse> => {
     const validatedRequest = addExerciseRequestSchema.parse(request);
-    const { name, max, units, userid } = validatedRequest.body;
-    const exercise = exerciseRepository.addExercise(name, max, units, userid);
+    const { id } = validatedRequest.user;
+    const { name, max, units } = validatedRequest.body;
+    const exercise = await exerciseRepository.addExercise(name, max, units, id);
 
     return {
         body: exercise,
