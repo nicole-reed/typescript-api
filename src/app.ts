@@ -10,6 +10,7 @@ import { getExercises } from "./handlers/getExercises";
 import { addExercise } from "./handlers/addExercise";
 import { loginUser } from "./handlers/loginUser";
 import { authenticateUser } from "./middleware/authMiddleware";
+import "dotenv/config";
 
 const app = express();
 const port = 3000;

@@ -3,7 +3,6 @@ import { userRepository } from "../repositories/user.repository";
 import { HttpResponse } from "../models/httpResponse";
 import { tokenService } from "../services/token.service";
 import bcrypt from "bcrypt";
-import "dotenv/config";
 
 export const getUsers = async (): Promise<HttpResponse> => {
     const users = await userRepository.getUsers();
