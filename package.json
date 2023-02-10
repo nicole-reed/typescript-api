@@ -1,8 +1,9 @@
 {
   "scripts": {
     "lint": "eslint -c .eslintrc src/**/*",
-    "start": "npm run build && node dist/app.js",
-    "build": "tsc"
+    "start": "node dist/app.js",
+    "build": "tsc",
+    "gcp-build": "tsc -p ."
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
